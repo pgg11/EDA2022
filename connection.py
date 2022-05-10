@@ -29,32 +29,52 @@ class Connection():
                 request = await websocket.recv()
                 print(f"< {request}")
                 request_data = json.loads(request)
-                if request_data['event'] == 'update_user_list':
-                    self.user_list = request_data['data']['users']
-                    print(f"Updated user_list: {self.user_list}")
+                if request_data['event'] == 'user_list':
+                    pass
+                    #self.user_list = request_data['data']['users']
+                    #print(f"Updated user_list: {self.user_list}")
                 if request_data['event'] == 'gameover':
                     pass
                 if request_data['event'] == 'challenge':
                     await self.send(
                         websocket,
                         'accept_challenge',
-                        {
-                            'challenge_id' : request_data['data']['challenge_id']
-                        }
+                        {'challenge_id' : request_data['data']['challenge_id']}
                     )
                 if request_data['event'] == 'your_turn':
                     #Si el id no está en games, se crea un juego y se agrega
-                    if not self.games[request_data['data']['game_id']]:
-                        self.games['game_id'] =  game.Game(request_data['data'])
+                    game_id = request_data['data']['game_id']
+                    if self.games.get(game_id) == None:
+                        self.games[game_id] =  game.Game(request_data['data'])
                     #Si se encuentra, actualiza la info
                     else:
-                        self.games['game_id'].update_status(request_data['data'])
-                    self.games['game_id'].show_board()
+                        self.games[game_id].update_status(request_data['data'])
+                    #Imprime el tablero
+                    self.games[game_id].show_board()
+                    #Realiza acción
+                    move = self.games[game_id].process_your_turn()
+                    #print(move) #<--- Para revisar el movimiento hecho
+                    from_row = move["from_row"]
+                    to_row = move["to_row"]
+                    from_col = move["from_col"]
+                    to_col = move["to_col"] 
+                    
+                    await self.send(
 
-                    ##continuar##
+                        websocket,
+                        'move',
+                        {
+                            'game_id': request_data['data']['game_id'],
+                            'turn_token': request_data['data']['turn_token'],
+                            'from_row': from_row,
+                            'from_col': from_col,
+                            'to_row': to_row,
+                            'to_col': to_col,
+                        },
+                    )
             except Exception:
                 print(f"Error {Exception}")
-                break
+                break  
     
     async def send(self,websocket,action,data):
         message = json.dumps(

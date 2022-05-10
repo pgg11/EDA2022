@@ -8,6 +8,6 @@ token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoicGFibG9nZzAxMUBnbWFpbC
 newConn = connection.Connection(token)
 
 try:
-    asyncio.run(newConn.start())
+    asyncio.get_event_loop().run_until_complete(newConn.start())
 except KeyboardInterrupt:
     print("Exiting...")
