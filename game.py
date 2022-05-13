@@ -12,7 +12,7 @@ class Game():
         self.remaining_moves = data["remaining_moves"]
         self.walls = data["walls"]
         self.strBoard = data["board"]
-        self.board = board.PawnBoard()
+        self.board = board.PawnBoard(data["side"])
 
 
     def update_status(self,data):
@@ -32,14 +32,14 @@ class Game():
             print(line_names[row]+"|",end='')
             print(self.strBoard[17*(row):17*(row) + 17],end='\n')
 
-
-    #Falta aplicar lógica para decision de movimiento o colocación de pared
+    #En caso de error revisar desde acá
+    #Falta terminar lógica para decision de movimiento o colocación de pared
     def process_your_turn(self):
 
         #Actualiza el tablero
         self.board.updatePawnBoard(self.strBoard)
         #if randint(0, 4) == 0 and self.walls>0 :
-        return self.board.processMove(self.side)
+        return self.board.processMove()
         #else:
         #   self.process_move(websocket)
     
