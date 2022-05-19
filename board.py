@@ -10,8 +10,7 @@ class PawnBoard():
         self.pawns = {}
         self.oppositePawns = {}
         self.lastPosition = {'from_row': None, 'from_col': None}
-    
-    #Marca los bordes del tablero como lados bloqueados
+
     def initBoard(self):
         #Agrega los peones a un diccionario con las posiciones iniciales
         if self.side=="N":

@@ -1,5 +1,4 @@
 
-
 class Pawn():
 
     def __init__(cls,row,col):

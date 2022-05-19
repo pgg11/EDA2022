@@ -34,6 +34,7 @@ class Game():
             print(self.strBoard[17*(row):17*(row) + 17],end='\n')
 
     #En caso de error revisar desde acá
+    
     #Falta terminar lógica para decision de movimiento o colocación de pared
     def process_your_turn(self):
 
