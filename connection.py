@@ -1,7 +1,7 @@
 import websockets
 import time
 import json
-import game
+from game import Game
 
 class Connection():
 
@@ -45,7 +45,7 @@ class Connection():
                     #Si el id no está en games, se crea un juego y se agrega
                     game_id = request_data['data']['game_id']
                     if self.games.get(game_id) == None:
-                        self.games[game_id] =  game.Game(request_data['data'])
+                        self.games[game_id] =  Game(request_data['data'])
                     #Si se encuentra, actualiza la info
                     else:
                         self.games[game_id].update_status(request_data['data'])
@@ -53,25 +53,32 @@ class Connection():
                     self.games[game_id].show_board()
                     #Realiza acción
                     move = self.games[game_id].process_your_turn()
-                    #print(move) #<--- Para revisar el movimiento hecho
-                    from_row = move["from_row"]
-                    to_row = move["to_row"]
-                    from_col = move["from_col"]
-                    to_col = move["to_col"] 
-                    
-                    await self.send(
-
-                        websocket,
-                        'move',
-                        {
-                            'game_id': request_data['data']['game_id'],
-                            'turn_token': request_data['data']['turn_token'],
-                            'from_row': from_row,
-                            'from_col': from_col,
-                            'to_row': to_row,
-                            'to_col': to_col,
-                        },
-                    )
+                    #Verifica acción y la envía
+                    if len(move) == 4:
+                        await self.send(
+                            websocket,
+                            'move',
+                            {
+                                'game_id': request_data['data']['game_id'],
+                                'turn_token': request_data['data']['turn_token'],
+                                'from_row': move['from_row'],
+                                'from_col': move['from_col'],
+                                'to_row': move['to_row'],
+                                'to_col': move['to_col'],
+                            },
+                        )
+                    else:
+                        await self.send(
+                            websocket,
+                            'wall',
+                            {
+                                'game_id': request_data['data']['game_id'],
+                                'turn_token': request_data['data']['turn_token'],
+                                'row': move['row'],
+                                'col': move['col'],
+                                'orientation': move['orientation'],
+                            }
+                        )
             except Exception:
                 print(f"Error {Exception}")
                 break  

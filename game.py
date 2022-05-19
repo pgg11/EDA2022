@@ -1,5 +1,5 @@
-#from random import randint
-import board
+from random import randint
+from board import PawnBoard
 
 class Game():
 
@@ -12,7 +12,8 @@ class Game():
         self.remaining_moves = data["remaining_moves"]
         self.walls = data["walls"]
         self.strBoard = data["board"]
-        self.board = board.PawnBoard(data["side"])
+        self.board = PawnBoard(data["side"])
+        self.board.initBoard()
 
 
     def update_status(self,data):
@@ -38,11 +39,7 @@ class Game():
 
         #Actualiza el tablero
         self.board.updatePawnBoard(self.strBoard)
-        #if randint(0, 4) == 0 and self.walls>0 :
-        return self.board.processMove()
-        #else:
-        #   self.process_move(websocket)
-    
-#
-#game = Game({"board": "  N     N     N                                                                                                                                                                                                                                                                   S     S     S  ", "walls": 10.0, "remaining_moves": 200.0, "player_1": "pablogg011@gmail.com", "side": "N", "score_1": 0.0, "score_2": 0.0, "player_2": "pabloTestBot", "turn_token": "0f1af4d0-3886-4bb3-9248-70f4a4394291", "game_id": "a00152f4-cfae-11ec-aef0-7ecdf393f9cc"})
-#game.show_board()
+        if randint(0, 9) == 0 and self.walls>0 :
+            return self.board.processWall()
+        else:
+            return self.board.processMove()

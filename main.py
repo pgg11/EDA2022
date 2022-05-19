@@ -1,13 +1,18 @@
-import connection
+from connection import Connection
 import asyncio
 
 
+def main():
+    file = open("/home/pablo/Repositorios/EDA2022/token.txt","r")
+    token = file.read()
+    file.close()
+    
+    newConn = Connection(token)
 
+    try:
+        asyncio.get_event_loop().run_until_complete(newConn.start())
+    except KeyboardInterrupt:
+        print("Exiting...")
 
-token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoicGFibG9nZzAxMUBnbWFpbC5jb20ifQ.xJ3bn0q62KZh8n1IPVS7SscLgx2dejAajl2QwJHsxLs'
-newConn = connection.Connection(token)
-
-try:
-    asyncio.get_event_loop().run_until_complete(newConn.start())
-except KeyboardInterrupt:
-    print("Exiting...")
+if __name__ == '__main__':
+    main()
