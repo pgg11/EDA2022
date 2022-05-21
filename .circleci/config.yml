@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  coveralls: coveralls/coveralls@x.y.z
+  coveralls: coveralls/coveralls@1.0.6
 
 jobs:
   build:
@@ -11,11 +11,11 @@ jobs:
     steps:
       - checkout
 
-      - run:
+      steps:
+        - run: 
           name: Install and Make
-          command: 'npm install && make test-coverage'
-
-      - coveralls/upload
+          command: npm install && make test-coverage
+        - coveralls/upload
 
   test:
     working_directory: ~/circleci-python
@@ -28,5 +28,6 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build
-      - test
+      - build:
+        requires:
+          - test
