@@ -110,6 +110,13 @@ class Pawn():
             return ({'from_row':row,'to_row':row-1,'from_col':col,'to_col':col})
     
     @classmethod
+    def moveBackwards(cls,row,col,side):
+        if side == 'N':
+            return ({'from_row':row,'to_row':row-1,'from_col':col,'to_col':col})
+        else:
+            return ({'from_row':row,'to_row':row+1,'from_col':col,'to_col':col})
+    
+    @classmethod
     def checkLeftSide(cls,board,row,col,lastPosition):
         if col > 0:
             return (board[row][col].leftBorder and board[row][col-1].value == ' ' and

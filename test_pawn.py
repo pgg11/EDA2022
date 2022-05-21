@@ -15,6 +15,14 @@ class TestPawn(unittest.TestCase):
         self.assertEqual(Pawn.moveForward(8,1,'S'),{'from_row':8,'from_col':1,'to_row':7,'to_col':1})
         self.assertEqual(Pawn.moveForward(1,3,'S'),{'from_row':1,'from_col':3,'to_row':0,'to_col':3})
         self.assertEqual(Pawn.moveForward(4,8,'S'),{'from_row':4,'from_col':8,'to_row':3,'to_col':8})
+    
+    def test_moveBackwards(self):
+
+        self.assertEqual(Pawn.moveBackwards(3,5,'N'),{'from_row':3,'from_col':5,'to_row':2,'to_col':5})
+        self.assertEqual(Pawn.moveBackwards(7,2,'S'),{'from_row':7,'from_col':2,'to_row':8,'to_col':2})
+        self.assertEqual(Pawn.moveBackwards(3,5,'N'),{'from_row':3,'from_col':5,'to_row':2,'to_col':5})
+        self.assertEqual(Pawn.moveBackwards(5,4,'S'),{'from_row':5,'from_col':4,'to_row':6,'to_col':4})
+        
 
     def test_checkLeftSide(self):
 

@@ -23,5 +23,35 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.game.walls,10)
         self.assertEqual(self.game.strBoard,"  N     N                                                                         N                                                                                                                                                             S                                       S     S  ")
 
+'''
+    Falta terminar el test
+
+    def test_process_your_turn(self):
+
+
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 9.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 8.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 7.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 6.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 5.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 4.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 3.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 2.0
+        self.assertEqual(len(self.game.process_your_turn()),3)
+        self.game.walls = 1.0
+        self.assertEqual(len(self.game.process_your_turn()),4)'''
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,4 @@
 import unittest
-from pawn import Pawn
 from board import PawnBoard
 
 class TestBoard(unittest.TestCase):
