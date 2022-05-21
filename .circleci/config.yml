@@ -10,8 +10,8 @@ jobs:
 
     steps:
       - run: 
-        name: Install and Make
-        command: npm install && make test-coverage
+          name: Install and Make
+          command: npm install && make test-coverage
       - coveralls/upload
 
   test:
