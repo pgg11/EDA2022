@@ -12,4 +12,4 @@ jobs:
 workflows:
   test:
     jobs:
-      - test:
+      - test
