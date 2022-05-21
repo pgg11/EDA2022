@@ -1,6 +1,22 @@
 version: 2.1
 
+orbs:
+  coveralls: coveralls/coveralls@x.y.z
+
 jobs:
+  build:
+    docker:
+      - image: circleci/node:10.0.0
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install and Make
+          command: 'npm install && make test-coverage'
+
+      - coveralls/upload
+
   test:
     working_directory: ~/circleci-python
     docker:
@@ -10,6 +26,7 @@ jobs:
       - run: python3 -m unittest -v
 
 workflows:
-  test:
+  build_and_test:
     jobs:
-      - test:
+      - build
+      - test
