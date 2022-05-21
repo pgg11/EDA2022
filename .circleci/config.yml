@@ -9,13 +9,10 @@ jobs:
       - image: circleci/node:10.0.0
 
     steps:
-      - checkout
-
-      steps:
-        - run: 
-          name: Install and Make
-          command: npm install && make test-coverage
-        - coveralls/upload
+      - run: 
+        name: Install and Make
+        command: npm install && make test-coverage
+      - coveralls/upload
 
   test:
     working_directory: ~/circleci-python
