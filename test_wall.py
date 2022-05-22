@@ -84,15 +84,76 @@ class TestWall(unittest.TestCase):
     def test_northSideWall(self):
 
         self.northBoard.initBoard()
-        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns,10.0),{'row':5,'col':1,'orientation':'v'})
+        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns),{'row':5,'col':1,'orientation':'v'})
+        self.northBoard.board[5][1].rightBorder = False
+        self.northBoard.board[6][1].rightBorder = False
         self.northBoard.board[8][1].value = ' '
         self.northBoard.board[7][1].value = 'S'
         self.northBoard.positionPawns()
-        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns,9.0),{'row':5,'col':0,'orientation':'v'})
+        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns),{'row':5,'col':0,'orientation':'v'})
+        self.northBoard.board[5][1].leftBorder = False
+        self.northBoard.board[6][1].leftBorder = False
+        self.southBoard.board[5][0].rightBorder = False
+        self.southBoard.board[6][0].rightBorder = False
         self.northBoard.board[7][1].value = ' '
         self.northBoard.board[6][1].value = 'S'
         self.northBoard.positionPawns()
-        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns,8.0),{'row':4,'col':1,'orientation':'h'})
+        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns),{'row':4,'col':1,'orientation':'h'})
+        self.northBoard.board[5][1].topBorder = False
+        self.northBoard.board[5][2].topBorder = False
+        self.northBoard.board[6][1].value = ' '
+        self.northBoard.board[5][1].value = 'S'
+        self.assertEqual(Wall.northSideWall(self.northBoard.board,self.northBoard.oppositePawns),{'row':5,'col':4,'orientation':'v'})
+
+    def test_southSideWall(self):
+
+
+        self.southBoard.initBoard()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':2,'col':7,'orientation':'v'})
+        self.southBoard.board[0][4].value = ' '
+        self.southBoard.board[1][4].value = 'N'
+        self.southBoard.board[2][7].rightBorder = False
+        self.southBoard.board[3][7].rightBorder = False
+        self.southBoard.positionPawns()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':3,'col':4,'orientation':'v'})
+        self.southBoard.board[1][4].value = ' '
+        self.southBoard.board[2][4].value = 'N'
+        self.southBoard.board[3][4].rightBorder = False
+        self.southBoard.board[4][4].rightBorder = False
+        self.southBoard.positionPawns()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':3,'col':3,'orientation':'v'})
+        self.southBoard.board[2][4].value = ' '
+        self.southBoard.board[3][4].value = 'N'
+        self.southBoard.board[3][4].leftBorder = False
+        self.southBoard.board[4][4].leftBorder = False
+        self.southBoard.positionPawns()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':4,'col':4,'orientation':'h'})
+        self.southBoard.board[3][4].value = ' '
+        self.southBoard.board[4][4].value = 'N'
+        self.southBoard.board[4][4].botBorder = False
+        self.southBoard.board[4][5].botBorder = False
+        self.southBoard.positionPawns()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':2,'col':6,'orientation':'v'})
+        self.southBoard.board[0][7].value = ' '
+        self.southBoard.board[1][7].value = 'N'
+        self.southBoard.board[2][7].leftBorder = False
+        self.southBoard.board[3][7].leftBorder = False
+        self.southBoard.positionPawns()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':3,'col':7,'orientation':'h'})
+        self.southBoard.board[1][7].value = ' '
+        self.southBoard.board[2][7].value = 'N'
+        self.southBoard.board[3][7].botBorder = False
+        self.southBoard.board[3][8].botBorder = False
+        self.southBoard.positionPawns()
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':2,'col':1,'orientation':'v'})
+        self.southBoard.board[2][1].rightBorder = False
+        self.southBoard.board[3][1].rightBorder = False
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':2,'col':0,'orientation':'v'})
+        self.southBoard.board[2][1].leftBorder = False
+        self.southBoard.board[3][1].leftBorder = False
+        self.assertEqual(Wall.southSideWall(self.southBoard.board,self.southBoard.oppositePawns),{'row':3,'col':1,'orientation':'h'})
+
+
 
         
 
