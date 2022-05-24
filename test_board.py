@@ -133,7 +133,33 @@ class TestBoard(unittest.TestCase):
         self.assertTrue(self.testBoard.board[3][1].topBorder)
         self.assertTrue(self.testBoard.board[5][6].rightBorder)
         self.assertTrue(self.testBoard.board[1][5].leftBorder)
-    
+
+        self.testBoard.updatePawnBoard("  N     N                                                                  | |              * *              | |   | |         -*-  * *             N| |       -*-     -*-        S                                                                              -*-                    S     S  ")
+
+        self.assertEqual(self.testBoard.board[0][1].value,'N')
+        self.assertEqual(self.testBoard.board[0][4].value,'N')
+        self.assertEqual(self.testBoard.board[0][7].value,' ')
+        self.assertEqual(self.testBoard.board[4][6].value,'N')
+        self.assertEqual(self.testBoard.board[1][8].value,' ')
+        self.assertEqual(self.testBoard.board[8][4].value,'S')
+        self.assertEqual(self.testBoard.board[8][7].value,'S')
+        self.assertEqual(self.testBoard.board[5][4].value,'S')
+
+        self.assertFalse(self.testBoard.board[2][3].rightBorder)
+        self.assertFalse(self.testBoard.board[3][3].rightBorder)
+        self.assertFalse(self.testBoard.board[2][4].leftBorder)
+        self.assertFalse(self.testBoard.board[2][4].rightBorder)
+        self.assertFalse(self.testBoard.board[2][5].leftBorder)
+        self.assertFalse(self.testBoard.board[3][4].botBorder)
+        self.assertFalse(self.testBoard.board[3][4].leftBorder)
+        self.assertFalse(self.testBoard.board[3][4].rightBorder)
+        self.assertFalse(self.testBoard.board[3][5].leftBorder)
+        self.assertFalse(self.testBoard.board[4][4].topBorder)
+        self.assertFalse(self.testBoard.board[4][6].rightBorder)
+        self.assertFalse(self.testBoard.board[5][7].topBorder)
+        self.assertFalse(self.testBoard.board[5][8].topBorder)    
+
+
     def test_processMove(self):
 
         self.testBoard.initBoard()

@@ -79,10 +79,10 @@ class PawnBoard():
                 if col < 8:
                     if strBoard[boardPointer+col*2+1] == '|': 
                         #Si encuentra una pared vertical marca los bordes afectados con False
-                        self.board[row][col-1].rightBorder=False
+                        self.board[row][col].rightBorder=False
                         self.board[row][col+1].leftBorder=False
                     else:
-                        self.board[row][col-1].rightBorder=True
+                        self.board[row][col].rightBorder=True
                         self.board[row][col+1].leftBorder=True
                 if boardPointer < 272:
                     if strBoard[boardPointer+col*2+17] == '-':
