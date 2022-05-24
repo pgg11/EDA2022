@@ -11,7 +11,7 @@ class Pawn():
             row = pawns[i].posY
             col = pawns[i].posX
             #Si no hay una pared en el lado sur del cuadrado chequeo posibles movimientos
-            if board[row][col].botBorder:
+            if board[row][col].botBorder and cls.checkForward(row,col,side,lastPosition):
                 #Si en el cuadrado siguiente hay un peon nuestro, si puede moverse a la derecha
                 #lo hace, sino intenta a la izquierda, sino cambia de peon
                 if board[row+1][col].value == 'N':
@@ -48,11 +48,14 @@ class Pawn():
                 else:
                     return cls.moveForward(row,col,side)
             #Si el lado sur del cuadrado está bloqueado por una pared, se mueve a un costado
-            if cls.checkLeftSide(board,row,col,lastPosition):
+            elif cls.checkLeftSide(board,row,col,lastPosition):
                 return cls.moveToLeft(row,col)
-            if cls.checkRightSide(board,row,col,lastPosition):
+            elif cls.checkRightSide(board,row,col,lastPosition):
                 return cls.moveToRight(row,col)
-            continue      
+            #Si no hay lado disponible para moverse, chequea el siguiente peon
+            else:
+                return cls.moveBackwards(row,col,side)
+
     
     @classmethod
     def southMove(cls,board,pawns,side,lastPosition):
@@ -60,7 +63,7 @@ class Pawn():
             row = pawns[i].posY
             col = pawns[i].posX
             #Si no hay una pared en el lado norte del cuadrado chequeo posibles movimientos
-            if board[row][col].topBorder:
+            if board[row][col].topBorder and cls.checkForward(row,col,side,lastPosition):
                 #Si en la cuadrado siguiente hay un peon nuestro, si puede moverse a la izquierda
                 #lo hace, sino intenta a la derecha, sino cambia de peon
                 if board[row-1][col].value == 'S':
@@ -81,7 +84,6 @@ class Pawn():
 
                     if cls.checkLeftDiagonalJump(board,row,col,side):
                         return cls.leftDiagonalJump(row,col,side)
-
                     continue
                 #Si el peon está en el anteúltimo cuadrado y en el siguiente hay un peon contrario
                 #busca moverse a un costado
@@ -95,13 +97,24 @@ class Pawn():
                 #el peon avanza un casillero
                 else:
                     return cls.moveForward(row,col,side)
+
             #Si el lado norte del cuadrado está bloqueado, se mueve a un costado
-            if cls.checkRightSide(board,row,col,lastPosition):
+            elif cls.checkRightSide(board,row,col,lastPosition):
                 return cls.moveToRight(row,col)
-            if cls.checkLeftSide(board,row,col,lastPosition):
+            elif cls.checkLeftSide(board,row,col,lastPosition):
                 return cls.moveToLeft(row,col)
-            continue
-            
+            #Si no hay lado disponible para moverse, chequea el siguiente peon
+            else:
+                return cls.moveBackwards(row,col,side)
+    
+    @classmethod
+    def checkForward(cls,row,col,side,lastPosition):
+        if side == 'N':
+            return(lastPosition != {'from_row':row+1,'from_col':col})
+        else:
+            return(lastPosition != {'from_row':row-1,'from_col':col})
+
+
     @classmethod
     def moveForward(cls,row,col,side):
         if side == 'N':
@@ -121,6 +134,8 @@ class Pawn():
         if col > 0:
             return (board[row][col].leftBorder and board[row][col-1].value == ' ' and
               lastPosition != {'from_row':row,'from_col':col-1})
+        elif col == 8:
+            return board[row][col].leftBorder and board[row][col-1].value == ' '
         else:
             return False
     
@@ -129,6 +144,8 @@ class Pawn():
         if col < 8:
             return (board[row][col].rightBorder and board[row][col+1].value == ' ' and
               lastPosition != {'from_row':row,'from_col':col+1})
+        elif col == 0:
+            return board[row][col].rightBorder and board[row][col+1].value == ' '
         else:
             return False
 

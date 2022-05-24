@@ -8,6 +8,13 @@ class TestPawn(unittest.TestCase):
         self.northBoard = PawnBoard('N')
         self.southBoard = PawnBoard('S')
 
+    def test_checkForward(self):
+        self.assertFalse(Pawn.checkForward(2,2,'N',{'from_row':3,'from_col':2}))
+        self.assertTrue(Pawn.checkForward(2,2,'N',{'from_row':1,'from_col':2}))
+
+        self.assertFalse(Pawn.checkForward(3,7,'S',{'from_row':2,'from_col':7}))
+        self.assertTrue(Pawn.checkForward(3,7,'S',{'from_row':4,'from_col':7}))
+
     def test_moveForward(self):
         self.assertEqual(Pawn.moveForward(0,0,'N'),{'from_row':0,'from_col':0,'to_row':1,'to_col':0})
         self.assertEqual(Pawn.moveForward(7,8,'N'),{'from_row':7,'from_col':8,'to_row':8,'to_col':8})
