@@ -4,6 +4,7 @@ import asyncio
 
 def main():
     file = open("/home/pablo/Repositorios/EDA2022/token.txt","r")
+                #Ubicacion del archivo de texto que contiene el token del bot
     token = file.read()
     file.close()
     

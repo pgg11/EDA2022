@@ -1,4 +1,3 @@
-from random import randint
 from board import PawnBoard
 
 class Game():
@@ -24,7 +23,9 @@ class Game():
         self.strBoard = data["board"]
     
     def show_board(self):
-
+        print(f"Side: {self.side}")
+        print(f"Player 1: {self.player1}    |   Player 2: {self.player2}")
+        print(f"Score 1: {self.score1}      |   Score 2: {self.score2}")
         line_names="0a1b2c3d4e5f6g7h8"
         #Board
         print("  " + line_names)
@@ -32,15 +33,12 @@ class Game():
         for row in range(17):
             print(line_names[row]+"|",end='')
             print(self.strBoard[17*(row):17*(row) + 17],end='\n')
-
-    #En caso de error revisar desde acá
     
-    #Falta terminar lógica para decision de movimiento o colocación de pared
     def process_your_turn(self):
 
-        #Actualiza el tablero
+        #Actualiza el tablero antes de cada jugada
         self.board.updatePawnBoard(self.strBoard)
-        if randint(0, 9) == 0 and self.walls>0 :
+        if self.walls>1 and self.board.processWall() != None:
             return self.board.processWall()
         else:
             return self.board.processMove()

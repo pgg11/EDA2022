@@ -1,15 +1,16 @@
 from square import BoardSquare
 from pawn import Pawn
-from random import randint
+from wall import Wall
 
 class PawnBoard():
     
     def __init__(self,side):
+        #Crea un tablero de 9x9 y en cada lugar de la matriz tiene un objeto BoardSquare
         self.board = [[BoardSquare(" ") for col in range(9)] for row in range(9)]
         self.side = side
         self.pawns = {}
         self.oppositePawns = {}
-        self.lastPosition = {'from_row': None, 'from_col': None}
+        self.lastPosition = [{'from_row': None, 'from_col': None},{'from_row': None, 'from_col': None}]
 
     def initBoard(self):
         #Agrega los peones a un diccionario con las posiciones iniciales
@@ -104,41 +105,22 @@ class PawnBoard():
             if row<8:
                 boardPointer+=34
     
-    #Falta terminar lógica de movimiento de peones
     def processMove(self):
         self.positionPawns()
         if self.side == 'N':
             move = Pawn.northMove(self.board,self.pawns,self.side,self.lastPosition)
-            self.lastPosition['from_row'] = move['from_row']
-            self.lastPosition['from_col'] = move['from_col']
+            self.lastPosition.pop()
+            self.lastPosition.insert(0,{'from_row':move['from_row'],'from_col':move['from_col']})
             return move
         else:
             move = Pawn.southMove(self.board,self.pawns,self.side,self.lastPosition)
-            self.lastPosition['from_row'] = move['from_row']
-            self.lastPosition['from_col'] = move['from_col']
+            self.lastPosition.pop()
+            self.lastPosition.insert(0,{'from_row':move['from_row'],'from_col':move['from_col']})
             return move
     
     def processWall(self):
         self.positionPawns()
-        print(f"Pared en: {self.wallPosition()}")
-        return self.wallPosition()
-
-    #Chequear como deben ser las posiciones de las paredes
-    def wallPosition(self):
         if self.side == 'N':
-            for i in range(3):
-                row = self.oppositePawns[i].posY
-                col = self.oppositePawns[i].posX
-                if col < 8 and row > 0:
-                    return {'row':row-1,'col':col,'orientation':'h'}
-            orientation = 'h' if randint(0,1) == 0 else 'v'
-            return ({'row':row,'col':col,'orientation':orientation})
-
+            return Wall.northSideWall(self.board,self.oppositePawns)
         else:
-            for i in range(2,-1,-1):
-                row = self.oppositePawns[i].posY
-                col = self.oppositePawns[i].posX
-                if col < 8 and row < 7:
-                    return {'row':row+1,'col':col,'orientation':'h'}
-            orientation = 'h' if randint(0,1) == 0 else 'v'
-            return ({'row':row,'col':col,'orientation':orientation})
+            return Wall.southSideWall(self.board,self.oppositePawns)

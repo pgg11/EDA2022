@@ -15,7 +15,7 @@ class Connection():
         
         while True:
             try:
-                print(f"Connection to {self.uri}")
+                #print(f"Connection to {self.uri}")
                 async with websockets.connect(self.uri) as websocket:
                     await self.play(websocket)
             except Exception:
@@ -27,14 +27,23 @@ class Connection():
         while True:
             try:
                 request = await websocket.recv()
-                print(f"< {request}")
+                #print(f"< {request}")
                 request_data = json.loads(request)
-                if request_data['event'] == 'user_list':
-                    pass
-                    #self.user_list = request_data['data']['users']
-                    #print(f"Updated user_list: {self.user_list}")
-                if request_data['event'] == 'gameover':
-                    pass
+                if request_data['event'] == 'list_users':
+                    self.user_list = request_data['data']['users']
+                    print("Updated user_list:")
+                    for user in self.user_list:
+                        print("                 "+ user)
+                if request_data['event'] == 'game_over':
+                    print("GAME OVER")
+                    print(f"Player 1: {request_data['data']['player_1']} | Score: {request_data['data']['score_1']}")
+                    print(f"Player 2: {request_data['data']['player_2']} | Score: {request_data['data']['score_2']}")
+                    print("Winner: ", end="")
+                    if float(request_data['data']['score_1']) > float(request_data['data']['score_2']):
+                        print(request_data['data']['player_1'])
+                    else:
+                        print(request_data['data']['player_2'])
+
                 if request_data['event'] == 'challenge':
                     await self.send(
                         websocket,
@@ -42,6 +51,7 @@ class Connection():
                         {'challenge_id' : request_data['data']['challenge_id']}
                     )
                 if request_data['event'] == 'your_turn':
+                    print(f"Remaining turns: {request_data['data']['remaining_moves']}")
                     #Si el id no está en games, se crea un juego y se agrega
                     game_id = request_data['data']['game_id']
                     if self.games.get(game_id) == None:
@@ -90,5 +100,10 @@ class Connection():
                 'data' : data,
             }
         )
-        print(message)
+        print(f"Action: {action}")
+        if action == 'wall':
+            print(f"        row: {data['row']} col: {data['col']} orientation: {data['orientation']}")
+        elif action == 'move':
+            print(f"        from_row: {data['from_row']} to_row: {data['to_row']}")
+            print(f"        from_col: {data['from_col']} to_col: {data['to_col']}")
         await websocket.send(message)
